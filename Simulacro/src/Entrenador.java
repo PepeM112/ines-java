@@ -2,7 +2,6 @@ public class Entrenador extends Usuario {
 
     private int alumnosAsignados;
     private Horario horario;
-    private int numeroEntrenadores;
 
     public Entrenador(String nombre, int edad, int id, Horario horario) {
         super(nombre, edad, id);
@@ -10,8 +9,19 @@ public class Entrenador extends Usuario {
         this.horario = horario;
     }
 
-    public boolean puedeAsignarClase(Clase c) {
+    public Horario getHorario() {
+        return this.horario;
+    }
 
+    public int getAlumnosAsignados() {
+        return this.alumnosAsignados;
+    }
+
+    public boolean puedeAsignarClase(Clase c) {
+        if (this.getClasesAsignadas().size() >= 4) {
+            return false;
+        }
+        return true;
     }
 
     public void asignarClase(Clase c) {

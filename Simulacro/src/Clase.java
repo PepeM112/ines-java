@@ -9,8 +9,20 @@ public class Clase {
         this.horario = horario;
     }
 
-    public void añadirAlumno() {
+    public String getNombre() {
+        return this.nombre;
+    }
 
+    public void añadirAlumno() {
+        System.out.println("Escribe el ID del usuario:");
+        int idUsuario = Principal.sc.nextInt();
+        Usuario u = Principal.getUsuarioPorID(idUsuario);
+        if (u == null) return;
+
+        if (u.puedeAsignarClase(this) && apuntados < 15) {
+            apuntados++;
+            u.asignarClase(this);
+        }
     }
 
     public void asignarInstructor(Entrenador e) {

@@ -1,10 +1,11 @@
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Principal {
     private static ArrayList<Usuario> usuariosRegistrados;
     private static ArrayList<Clase> clasesDisponibles;
-    private static final Scanner sc = new Scanner(System.in);
+    protected static final Scanner sc = new Scanner(System.in);
 
     public static void mostrarMenu() {
         System.out.println("Bienvenido al gimnasio");
@@ -21,12 +22,73 @@ public class Principal {
         }
     }
 
+    public static void asignarEntrenadorASocioVIP() {
+        System.out.println("Escribe el ID del Socio:");
+        int idSocio = sc.nextInt();
+        Usuario u = getUsuarioPorID(idSocio);
+        if (u == null) return;
+        SocioVIP s;
+        if (u instanceof SocioVIP) {
+            s = (SocioVIP) u;
+        } else {
+            System.out.println("El usuario no es un socio VIP");
+            return;
+        }
+
+        System.out.println("Escribe el ID del Entrenador:");
+        int idEntrenador = sc.nextInt();
+        u = getUsuarioPorID(idEntrenador);
+        if (u == null) return;
+        Entrenador e;
+        if (u instanceof Entrenador) {
+            e = (Entrenador) u;
+        } else {
+            System.out.println("El usuario no es un entrenador");
+            return;
+        }
+
+        System.out.println("¿Qué horario quieres?");
+        System.out.println("0 - MAÑANA");
+        System.out.println("1 - TARDE");
+        int horario = sc.nextInt();
+        Horario h = Horario.values()[0];
+        try {
+            s.asignarEntrenador(e, h);
+        } catch (EntrenadorNoDisponibleException ende) {
+            System.err.println(ende);
+        }
+        System.out.println("Entrenador asignado con éxito.");
+    }
+
+    public static void apuntarUsuarioAClase() {
+        System.out.println("Escribe el nombre de la clase:");
+        String nombreClase = sc.nextLine();
+        //Buscar clase
+        for (Clase clase : clasesDisponibles) {
+            if (clase.getNombre().equals(nombreClase)) {
+                clase.añadirAlumno();
+                return;
+            }
+        }
+        System.out.println("No existe esta clase.");
+    }
+
     public static ArrayList<Usuario> leerArchivoUsuarios() {
 
     }
 
     public static ArrayList<Clase> leerArchivoClases() {
 
+    }
+
+    public static Usuario getUsuarioPorID(int id) {
+        for (Usuario u : usuariosRegistrados) {
+            if (u.id == id) {
+                return u;
+            }
+        }
+        System.out.println("Usuario no encontrado");
+        return null;
     }
 
     public static void main(String[] args) {
@@ -42,10 +104,10 @@ public class Principal {
                     verUsuariosRegistrados();
                 }
                 case 2 -> {
-
+                    apuntarUsuarioAClase();
                 }
                 case 3 -> {
-
+                    asignarEntrenadorASocioVIP();
                 }
                 case 0 -> {
                     System.exit(0);
