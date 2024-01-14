@@ -13,6 +13,10 @@ public class Clase {
         return this.nombre;
     }
 
+    public Horario getHorario() {
+        return this.horario;
+    }
+
     public void añadirAlumno() {
         System.out.println("Escribe el ID del usuario:");
         int idUsuario = Principal.sc.nextInt();
@@ -26,7 +30,10 @@ public class Clase {
     }
 
     public void asignarInstructor(Entrenador e) {
-
+        if(this.instructor == null)
+            this.instructor = e;
+        else
+            System.out.println("Esta clase ya tiene instructor asignado");
     }
 
 }

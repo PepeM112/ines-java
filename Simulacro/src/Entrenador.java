@@ -25,6 +25,8 @@ public class Entrenador extends Usuario {
     }
 
     public void asignarClase(Clase c) {
-
+        if(this.horario.equals(c.getHorario()) && puedeAsignarClase(c)){
+            this.clasesAsignadas.add(c);
+        }
     }
 }

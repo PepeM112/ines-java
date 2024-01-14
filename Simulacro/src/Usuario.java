@@ -41,6 +41,12 @@ public abstract class Usuario {
         return clasesAsignadas;
     }
 
+    /**
+    Devuelve un booleano indicando si el usuario recibido por argumento puede apuntarse a una clase.
+
+     @param c - Clase a la que comprobamos si el usuario puede apuntarse
+     @return boolean - true si se puede apuntar, false sino
+     */
     public abstract boolean puedeAsignarClase(Clase c);
 
     public abstract void asignarClase(Clase c);

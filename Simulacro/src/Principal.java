@@ -1,4 +1,9 @@
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.SQLOutput;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -74,11 +79,52 @@ public class Principal {
     }
 
     public static ArrayList<Usuario> leerArchivoUsuarios() {
+        ArrayList<Usuario> listaUsuarios = new ArrayList<>();
 
+        try (BufferedReader br = new BufferedReader(new FileReader("usuarios.txt"))) {
+            String linea = br.readLine();
+            while (!linea.isEmpty()){
+                String[] palabras = linea.split(";");
+                switch (palabras[0]) {
+                    case "REGULAR" -> {
+                        listaUsuarios.add(new Socio(palabras[1], Integer.parseInt(palabras[2]), Integer.parseInt(palabras[3]), LocalDate.parse(palabras[4])));
+                    }
+                    case "VIP" -> {
+                        listaUsuarios.add(new SocioVIP(palabras[1], Integer.parseInt(palabras[2]), Integer.parseInt(palabras[3]), LocalDate.parse(palabras[4])));
+
+                    }
+                    case "ENTRENADOR" -> {
+                        listaUsuarios.add(new Entrenador(palabras[1], Integer.parseInt(palabras[2]), Integer.parseInt(palabras[3]), Horario.valueOf(palabras[4])));
+                    }
+                }
+                linea = br.readLine();
+            }
+        } catch(FileNotFoundException fnfe) {
+            System.out.println("El archivo no existe.");
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+
+        return listaUsuarios;
     }
 
     public static ArrayList<Clase> leerArchivoClases() {
+        ArrayList<Clase> listaClases = new ArrayList<>();
 
+        try (BufferedReader br = new BufferedReader(new FileReader("clases.txt"))) {
+            String linea = br.readLine();
+            while (!linea.isEmpty()){
+                String[] palabras = linea.split(";");
+                listaClases.add(new Clase(palabras[0], Horario.valueOf(palabras[1])));
+                linea = br.readLine();
+            }
+        } catch(FileNotFoundException fnfe) {
+            System.out.println("El archivo no existe.");
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+
+        return listaClases;
     }
 
     public static Usuario getUsuarioPorID(int id) {
